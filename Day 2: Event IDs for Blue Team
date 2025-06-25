@@ -1,0 +1,82 @@
+# 🛡️ Blue Team Learning - Day 2: Key Windows Security Event IDs
+
+## 📅 Date: June 25, 2025  
+## 🎯 Goal:
+Understand the most important Windows Event IDs that help detect unauthorized access, privilege abuse, and suspicious system activity.
+
+---
+
+## 🔐 Essential Windows Event IDs
+
+| Event ID | Description |
+|----------|-------------|
+| 4624     | Successful login |
+| 4625     | Failed login attempt |
+| 4634     | Logoff |
+| 4648     | Logon using explicit credentials |
+| 4672     | Admin-level login (privileged) |
+| 4688     | New process creation |
+| 4689     | Process termination |
+| 4697     | New service installed |
+| 1102     | Security log was cleared |
+| 4720     | New user account created |
+| 4722     | User account enabled |
+| 4723     | Password change attempted |
+| 4732     | User added to a local group |
+| 4776     | NTLM authentication attempt |
+| 5140     | Network share accessed |
+| 5156     | Network connection allowed by WFP |
+
+---
+
+## 🔎 Detection Use Cases
+
+### ✅ Brute Force Login Detection
+- Multiple `4625` (failed login) events in a short time
+
+### ✅ Privilege Escalation Monitoring
+- A `4624` login followed by a `4672` event indicates privilege escalation
+
+### ✅ Malware Execution Traces
+- `4688` shows processes like `powershell.exe`, `cmd.exe`, or `mshta.exe`
+
+### ✅ Covering Tracks
+- `1102` indicates someone cleared the Security log
+
+---
+
+## 🧪 Practical Task
+
+1. 🔐 Simulate wrong password attempts on your own PC
+   - Lock your screen → Enter wrong password 2–3 times → Enter correct one
+
+2. 📖 Open Event Viewer
+   - Go to **Windows Logs → Security**
+   - Use **Filter Current Log** to search Event IDs `4624`, `4625`, `4672`
+
+3. 🕵️‍♂️ Analyze each log:
+   - Account Name
+   - Logon Type (2 = interactive, 3 = network)
+   - Source IP
+   - Timestamp
+
+4. ✅ If you installed **Sysmon** on Day 1:
+   - Go to: **Applications and Services Logs → Microsoft → Windows → Sysmon**
+   - Look for **Event ID 1** (Process Creation)
+
+---
+
+## 📚 Resources
+
+- [🔗 SANS Windows Event ID Cheat Sheet](https://www.sans.org/media/score/checklists/windows-event-id-cheat-sheet.pdf)
+- [🔗 Microsoft Event ID Documentation](https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-id)
+
+---
+
+## 🧠 Summary
+
+Today I learned:
+- 15+ critical Event IDs used in threat detection
+- How to simulate login failures
+- How to correlate event logs for possible attacker behavior
+
