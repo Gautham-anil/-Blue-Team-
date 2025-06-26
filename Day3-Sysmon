@@ -1,0 +1,61 @@
+# 🛡️ Blue Team Learning - Day 3: Installing & Using Sysmon (Simple & Clear)
+
+## 📅 Date: June 26, 2025  
+## 🎯 Goal:
+Set up **Sysmon** to collect detailed logs from Windows. These logs help us detect suspicious activity like malware, hacking attempts, or system misuse.
+
+---
+
+## 🧠 What is Sysmon?
+
+**Sysmon (System Monitor)** is a free tool by Microsoft that watches your system and writes important security events to logs.
+
+Unlike normal Windows logs, **Sysmon gives more detail**:
+- Which programs start (and who started them)
+- If a suspicious connection happens
+- What files or registry settings are changed
+
+👉 Think of it like giving Windows **X-ray vision** for defenders.
+
+---
+
+## 🔧 Step-by-Step: How to Install Sysmon
+
+### ✅ Step 1: Download Sysmon
+📥 [Sysmon Official Download](https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon)
+
+- Extract the ZIP file. You’ll see `sysmon.exe`.
+
+---
+
+### ✅ Step 2: Download a Good Config File
+A **Sysmon config** tells it **what to log** and **what to ignore**.
+
+Use this trusted config:
+📥 [SwiftOnSecurity Config on GitHub](https://github.com/SwiftOnSecurity/sysmon-config)
+
+- Download the file: `sysmonconfig-export.xml`
+
+---
+
+### ✅ Step 3: Install Sysmon with Config
+
+Open **Command Prompt as Admin**, go to the folder where `sysmon.exe` is, then run:
+
+```bash
+sysmon -accepteula -i sysmonconfig-export.xml
+
+🔍 Important Sysmon Event IDs
+ID	What It Shows
+1	A new process started (e.g. cmd, powershell)
+3	A network connection happened
+11	A file was changed
+13	A registry key was modified
+22	A DNS query happened (e.g. google.com)
+
+Update or Remove Sysmon (Optional)
+To update the config:
+sysmon -c updated-config.xml
+
+To uninstall Sysmon:
+sysmon -u
