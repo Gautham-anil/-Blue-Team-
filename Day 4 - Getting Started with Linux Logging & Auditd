@@ -1,0 +1,73 @@
+# 🛡️ Blue Team Learning - Day 4 (Linux): Log Monitoring with Auditd
+
+## 📅 Date: June 27, 2025  
+## 🎯 Goal:
+Learn how to monitor system activity on Linux using built-in log files and the `auditd` audit framework to detect unauthorized actions like suspicious command usage or access to critical files.
+
+---
+
+## 📁 Linux Log Basics
+
+Linux stores logs under `/var/log`. Some important files:
+
+| Log File       | What It Tracks                                |
+|----------------|-----------------------------------------------|
+| `/var/log/auth.log` | Login attempts, SSH, sudo usage         |
+| `/var/log/syslog`   | System messages, services                |
+| `/var/log/dmesg`    | Boot & hardware-related messages         |
+| `/var/log/fail2ban.log` | Banned IPs, brute-force attempts     |
+
+---
+
+## 🧰 Step-by-Step: Monitor Logs with Auditd
+
+### ✅ Step 1: Install Auditd
+
+```bash
+sudo apt update && sudo apt install auditd -y
+
+sudo systemctl status auditd
+
+
+Step 2: Add Monitoring Rules
+🔹 Track execution of bash shell:
+
+sudo auditctl -a always,exit -F path=/bin/bash -F perm=x -k bash_exec
+🔹 Watch for access to /etc/passwd:
+
+sudo auditctl -w /etc/passwd -p rwxa -k passwd_watch
+
+
+: Simulate Activity
+🔸 Run Bash:
+
+/bin/bash
+exit
+🔸 Access a sensitive file:
+
+sudo cat /etc/passwd
+✅ Step 4: View Logs
+🔍 Search for bash execution:
+
+sudo ausearch -k bash_exec
+🔍 Search for file access:
+
+sudo ausearch -k passwd_watch
+📚 Bonus: Use journalctl for system log search
+View system log entries:
+
+journalctl -xe
+View only sudo actions:
+
+
+journalctl _COMM=sudo
+🧠 Summary
+Today I learned how to:
+
+Explore log files in /var/log
+
+Use auditd to track process execution and file access
+
+Simulate and detect unauthorized activity
+
+Use ausearch and journalctl to read logs like a Blue Teamer
